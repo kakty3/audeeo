@@ -3,7 +3,7 @@ services:
   
   app:
     build: .
-    image: "local/podcast-hosting:0.0.1"
+    image: "sdemurin/audeeo:0.0.1"
     depends_on:
       - db
     ports:
@@ -22,7 +22,7 @@ services:
     command: ["python", "-m", "app"]
   
   db:
-    image: postgres
+    image: "postgres:11.2"
     restart: always
     environment:
       POSTGRES_DB: podcast
