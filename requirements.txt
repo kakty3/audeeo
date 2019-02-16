@@ -1,0 +1,9 @@
+youtube_dl
+internetarchive
+flask
+psycopg2-binary
+Flask-SQLAlchemy
+Flask-Migrate
+Flask-Script
+feedgen
+filetype

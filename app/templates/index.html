@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block body %}
+<h1>Upload new file</h1>
+<form method=post enctype=multipart/form-data>
+    <input type="file" name="file" accept="audio/*"></br>
+    <div>
+        <input
+            type="radio"
+            id="uploadDestionationInternetArchive"
+            name="uploadDestionation"
+            value="internet_archive"
+            checked
+        >
+        <label for="uploadDestionationInternetArchive">Internet Archive</label>
+    </div>
+    <div>
+        <input type="radio" id="uploadDestionationLocal" name="uploadDestionation" value="local">
+        <label for="uploadDestionationLocal">Local</label>
+    </div>
+    <input type=submit value=Upload>
+</form>
+<a href="/uploads" target="_blank">Uploaded files</a>
+{% endblock %}

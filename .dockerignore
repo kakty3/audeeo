@@ -1,0 +1,20 @@
+# virtualenv
+.venv
+
+# VS Code
+*.code-workspace
+.vscode
+
+# Python
+*.pyc
+
+# Docker
+Dockerfile
+.dockerignore
+.env
+
+# Project specific
+README.md
+ignore
+db_data
+uploads

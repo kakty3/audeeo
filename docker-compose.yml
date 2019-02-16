@@ -1,0 +1,34 @@
+version: "3.2"
+services:
+  
+  app:
+    build: .
+    image: "local/podcast-hosting:0.0.1"
+    depends_on:
+      - db
+    ports:
+      - "8000:8000"
+    volumes:
+      - type: bind
+        source: ./app
+        target: /app
+      - type: bind
+        source: ./uploads
+        target: /var/uploads
+    env_file: .env
+    environment:
+      DATABASE_URL: "postgresql://admin:${POSTGRES_PASSWORD}@db/podcast"
+      APP_SETTINGS: "config.DevelopmentConfig"
+    command: ["python", "-m", "app"]
+  
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_DB: podcast
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
+    volumes:
+      - type: bind
+        source: ./db_data
+        target: /var/lib/postgresql/data
