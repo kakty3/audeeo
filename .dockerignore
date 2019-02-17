@@ -13,6 +13,10 @@ Dockerfile
 .dockerignore
 .env
 
+# Git
+.git
+.gitignore
+
 # Project specific
 README.md
 ignore
