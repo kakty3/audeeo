@@ -1,12 +1,12 @@
 FROM python:3.7
 
-WORKDIR /app
+WORKDIR /srv/audeeo
 
-COPY requirements.txt /app
+COPY requirements.txt requirements.txt
 RUN pip install --trusted-host pypi.python.org -r requirements.txt
 
-COPY ./app /app
+COPY . /srv/audeeo
 
 EXPOSE 8000
 
-CMD ["python", "-m", "app"]
+CMD ["python", "manage.py", "run"]

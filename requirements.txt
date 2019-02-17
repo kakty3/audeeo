@@ -7,3 +7,4 @@ Flask-Migrate
 Flask-Script
 feedgen
 filetype
+transliterate

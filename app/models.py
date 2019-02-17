@@ -1,4 +1,5 @@
-from app import db
+from . import db
+
 
 class File(db.Model):
     __tablename__ = 'files'

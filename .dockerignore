@@ -17,6 +17,9 @@ Dockerfile
 .git
 .gitignore
 
+# Flask
+instance
+
 # Project specific
 README.md
 ignore

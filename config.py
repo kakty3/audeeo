@@ -11,6 +11,8 @@ class Config(object):
     SECRET_KEY = 'this-really-needs-to-be-changed'
     UPLOAD_FOLDER = '/var/uploads'
     SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL']
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+
 
 class ProductionConfig(Config):
     DEBUG = False

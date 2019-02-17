@@ -11,15 +11,16 @@ services:
     volumes:
       - type: bind
         source: ./app
-        target: /app
+        target: /srv/audeeo/app
       - type: bind
         source: ./uploads
         target: /var/uploads
+      - ./manage.py:/srv/audeeo/manage.py
     env_file: .env
     environment:
       DATABASE_URL: "postgresql://admin:${POSTGRES_PASSWORD}@db/podcast"
       APP_SETTINGS: "config.DevelopmentConfig"
-    command: ["python", "-m", "app"]
+    command: ["python", "manage.py", "run"]
   
   db:
     image: "postgres:11.2"
