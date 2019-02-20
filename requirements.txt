@@ -1,10 +1,7 @@
-youtube_dl
 internetarchive
 flask
-psycopg2-binary
 Flask-SQLAlchemy
-Flask-Migrate
-Flask-Script
-feedgen
+flask-wtf
+psycopg2-binary
 filetype
 transliterate
