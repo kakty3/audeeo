@@ -1,27 +1,16 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% block body %}
-<h1>Upload new file</h1>
-<form method=post enctype=multipart/form-data>
-    <input type="file" name="file" accept="audio/*"></br>
-    <div>
-        <input
-            type="radio"
-            id="uploadDestionationInternetArchive"
-            name="uploadDestionation"
-            value="internet_archive"
-            checked
-        >
-        <label for="uploadDestionationInternetArchive">Internet Archive</label>
-    </div>
-    <div>
-        <input type="radio" id="uploadDestionationLocal" name="uploadDestionation" value="local">
-        <label for="uploadDestionationLocal">Local</label>
-    </div>
-    <input type=submit value=Upload>
+<h1>Upload file</h1>
+<form method="POST" enctype="multipart/form-data">
+    {{ form.hidden_tag() }}
+    <p>
+        {{ form.file.label }}<br>
+        {{ form.file(accept='audio/*') }}<br>
+        {% for error in form.file.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    {{ form.submit }}
 </form>
-<ul>
-{% for file in files %}
-    <li><a href="{{ file.url }}" target="_blank">{{ file.filename }}</a></li>
-{% endfor %}
-<ul/>
-{% endblock %}
+{% include 'files_list.html' %}
+{% endblock%}
