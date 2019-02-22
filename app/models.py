@@ -8,9 +8,5 @@ class File(db.Model):
     filename = db.Column(db.String())
     url = db.Column(db.String(), unique=True)
 
-    def __init__(self, filename, url):
-        self.filename = filename
-        self.url = url
-
     def __repr__(self):
         return '<Filename {}, url {}>'.format(self.filename, self.url)

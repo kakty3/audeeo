@@ -44,5 +44,5 @@ def index():
         db.session.add(f)
         db.session.commit()
 
-    files = db.session.query(models.File).order_by(models.File.id)
+    files = models.File.query.all()
     return render_template('index.html', files=files, form=form)
