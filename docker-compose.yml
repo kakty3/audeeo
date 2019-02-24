@@ -12,12 +12,13 @@ services:
       - type: bind
         source: ./app
         target: /srv/audeeo/app
-      - ./manage.py:/srv/audeeo/manage.py
     env_file: .env
     environment:
       DATABASE_URL: "postgresql://admin:${POSTGRES_PASSWORD}@db/podcast"
       APP_SETTINGS: "config.DevelopmentConfig"
-    command: ["python", "manage.py", "run"]
+      FLASK_APP: "app"
+      FLASK_ENV: "development"
+    command: ["flask", "run", "--host", "0.0.0.0", "--port", "8000"]
   
   db:
     image: "postgres:11.2"
