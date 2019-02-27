@@ -21,4 +21,4 @@ from . import views, models, forms
 
 @app.shell_context_processor
 def make_shell_context():
-    return {'db': db, 'models': models}
+    return {'db': db, 'models': models, 'ia': ia_client}
