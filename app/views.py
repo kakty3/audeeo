@@ -10,9 +10,6 @@ from . import app, db, models, forms, ia_client
 from .utils import is_audio
 
 
-INERNET_ARCHIVE_ITEM_NAME = 'podcast-hosting-test-Ia8gi'
-
-
 @app.route('/', methods=['GET', 'POST'])
 def index():
     form = forms.UploadFileForm()
@@ -26,13 +23,12 @@ def index():
             
             return redirect(request.url)    
 
-        file.name = uuid.uuid4().hex + os.path.splitext(secure_filename(file.filename))[1]
-
         app.logger.info('Uploading file...')
-        response = ia_client.upload(item=INERNET_ARCHIVE_ITEM_NAME, filepath=file)
+        file_key = uuid.uuid4().hex + os.path.splitext(secure_filename(file.filename))[1]
+        response = ia_client.upload(item=app.config['INTERNET_ARCHIVE_ITEM_NAME'], file=file, key=file_key)
         app.logger.info('Upload results %s', response)
         
-        file_url = ia_client.get_public_url(INERNET_ARCHIVE_ITEM_NAME, file.name)
+        file_url = ia_client.get_public_url(app.config['INTERNET_ARCHIVE_ITEM_NAME'], file_key)
         message = 'File URL: {url}'.format(url=file_url)
         app.logger.info(message)
         flash(message, 'info')
