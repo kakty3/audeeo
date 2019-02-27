@@ -12,10 +12,14 @@ services:
       - type: bind
         source: ./app
         target: /srv/audeeo/app
+      - ./config.py:/srv/audeeo/config.py
     env_file: .env
     environment:
       DATABASE_URL: "postgresql://admin:${POSTGRES_PASSWORD}@db/podcast"
       APP_SETTINGS: "config.DevelopmentConfig"
+      IA_S3_ACCESS_KEY_ID: "${IA_S3_ACCESS_KEY_ID}"
+      IA_S3_SECRET_ACCESS_KEY_ID: "${IA_S3_SECRET_ACCESS_KEY_ID}"
+      FLASK_SECRET_KEY: "${FLASK_SECRET_KEY}"
       FLASK_APP: "app"
       FLASK_ENV: "development"
     command: ["flask", "run", "--host", "0.0.0.0", "--port", "8000"]
