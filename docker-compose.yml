@@ -9,9 +9,8 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - type: bind
-        source: ./app
-        target: /srv/audeeo/app
+      - ./config.py:/srv/audeeo/config.py
+      - ./app:/srv/audeeo/app
     env_file: .env
     environment:
       DATABASE_URL: "postgresql://admin:${POSTGRES_PASSWORD}@db/podcast"
