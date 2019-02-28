@@ -9,12 +9,11 @@ from .internet_archive import InternetArchive
 
 app = Flask(__name__, instance_relative_config=True)
 app.config.from_object(os.environ['APP_SETTINGS'])
-if os.path.isdir('instance'):
-    app.config.from_pyfile('config.py')
+app.config.from_pyfile('config.py', silent=True)
 db = SQLAlchemy(app)
 ia_client = InternetArchive(
-    access_key=os.environ['IA_S3_ACCESS_KEY_ID'],
-    secret_key=os.environ['IA_S3_SECRET_ACCESS_KEY_ID'],
+    access_key=app.config['IA_S3_ACCESS_KEY_ID'],
+    secret_key=app.config['IA_S3_SECRET_ACCESS_KEY_ID'],
 )
 
 from . import views, models, forms
