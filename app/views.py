@@ -25,10 +25,10 @@ def index():
 
         app.logger.info('Uploading file...')
         file_key = uuid.uuid4().hex + os.path.splitext(secure_filename(file.filename))[1]
-        response = ia_client.upload(item=app.config['INTERNET_ARCHIVE_ITEM_NAME'], file=file, key=file_key)
+        response = ia_client.upload(identifier=app.config['INTERNET_ARCHIVE_IDENTIFIER'], file=file, key=file_key)
         app.logger.info('Upload results %s', response)
         
-        file_url = ia_client.get_public_url(app.config['INTERNET_ARCHIVE_ITEM_NAME'], file_key)
+        file_url = ia_client.get_public_url(app.config['INTERNET_ARCHIVE_IDENTIFIER'], file_key)
         message = 'File URL: {url}'.format(url=file_url)
         app.logger.info(message)
         flash(message, 'info')
