@@ -15,6 +15,7 @@ class KeyExists(InternetArchiveError):
         return f'Key "{self._key}" already exists in item "{self._identifier}"'
 
 
+# TODO: add tests
 class InternetArchive(object):
     """Wrapper for internetachive library https://archive.org/services/docs/api/internetarchive/index.html
 
@@ -24,6 +25,14 @@ class InternetArchive(object):
     def __init__(self, access_key, secret_key):
         config = dict(s3=dict(access=access_key, secret=secret_key))
         self._session = internetarchive.get_session(config)
+        self._items = {}
+
+    def get_item(self, identifier):
+        try:
+            return self._items[identifier]
+        except KeyError:
+            self._items[identifier] = self._session.get_item(identifier)
+            return self._items[identifier]
 
     # TODO: check key is filename but not path
     # TODO: check key doesn't contain leading dots
@@ -41,8 +50,7 @@ class InternetArchive(object):
         :param force: Force to upload file, even if it exists, defaults to False
         :param force: bool, optional
         """
-        # TODO: cache items
-        item = self._session.get_item(identifier)
+        item = self.get_item(identifier)
         if not force and item.get_file(key).exists:
             raise KeyExists(identifier=identifier, key=key)
         return item.upload_file(file, key)
