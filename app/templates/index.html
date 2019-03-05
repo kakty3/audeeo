@@ -2,15 +2,18 @@
 {% block body %}
 <h1>Upload file</h1>
 <form method="POST" enctype="multipart/form-data">
-    {{ form.hidden_tag() }}
+    {{ upload_form.hidden_tag() }}
     <p>
-        {{ form.file.label }}<br>
-        {{ form.file(accept='audio/*') }}<br>
-        {% for error in form.file.errors %}
+        {{ upload_form.file.label }}<br>
+        {{ upload_form.file(accept='audio/*') }}<br>
+        {% for error in upload_form.file.errors %}
         <span style="color: red;">[{{ error }}]</span>
         {% endfor %}
     </p>
-    {{ form.submit }}
+    {{ upload_form.submit }}
 </form>
 {% include 'files_list.html' %}
+<form action="/update-feed" method="POST">
+    {{ update_feed_form.update }}
+</form>
 {% endblock%}
