@@ -5,3 +5,4 @@ flask-wtf
 psycopg2-binary
 filetype
 transliterate
+feedgen
