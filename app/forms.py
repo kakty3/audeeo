@@ -14,6 +14,3 @@ class UploadFileForm(FlaskForm):
         ]
     )
     submit = SubmitField('Upload')
-
-class UpdateFeedForm(FlaskForm):
-    update = SubmitField('update')
