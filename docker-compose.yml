@@ -11,6 +11,7 @@ services:
     volumes:
       - ./config.py:/srv/audeeo/config.py
       - ./app:/srv/audeeo/app
+      - ./migrations:/srv/audeeo/migrations
     env_file: .env
     environment:
       DATABASE_URL: "postgresql://admin:${POSTGRES_PASSWORD}@db/podcast"

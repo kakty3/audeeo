@@ -1,6 +1,7 @@
 feedgen
 filetype
 flask
+Flask-Migrate
 Flask-SQLAlchemy
 flask-wtf
 internetarchive
