@@ -9,4 +9,4 @@ COPY . /srv/audeeo
 
 EXPOSE 8000
 
-CMD ["python", "manage.py", "run"]
+CMD ["flask", "run", "--host", "0.0.0.0", "--port", "8000"]
