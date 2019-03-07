@@ -1,8 +1,8 @@
-internetarchive
+feedgen
+filetype
 flask
 Flask-SQLAlchemy
 flask-wtf
+internetarchive
 psycopg2-binary
-filetype
 transliterate
-feedgen
