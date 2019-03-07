@@ -7,11 +7,13 @@
 
 # Python
 *.pyc
+__pycache__
 
 # Docker
 Dockerfile
 .dockerignore
 .env
+docker-compose.yml
 
 # Git
 .git
