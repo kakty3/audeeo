@@ -45,5 +45,5 @@ def index():
         app.logger.info('Updating feed...')
         feed.update_feed(ia_identifier)
 
-    files = models.File.query.all()
+    files = models.File.query.order_by(models.File.created_at.desc()).all()
     return render_template('index.html', files=files, upload_form=upload_form)
