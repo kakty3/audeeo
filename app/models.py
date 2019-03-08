@@ -1,4 +1,4 @@
-import datetime
+from sqlalchemy.sql.functions import now as sql_now
 
 from . import db
 
@@ -9,7 +9,7 @@ class File(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     filename = db.Column(db.String())
     url = db.Column(db.String(), unique=True)
-    created_at = db.Column(db.DateTime(), default=datetime.datetime.utcnow)
+    created_at = db.Column(db.DateTime(timezone=True), server_default=sql_now())
 
     def __repr__(self):
         return '<Filename {}, url {}>'.format(self.filename, self.url)
