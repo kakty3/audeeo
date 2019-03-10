@@ -12,7 +12,7 @@ app = Flask(__name__, instance_relative_config=True)
 app.config.from_object(os.environ['APP_SETTINGS'])
 app.config.from_pyfile('config.py', silent=True)
 db = SQLAlchemy(app)
-migrate = Migrate(app, db, compare_type=True)
+migrate = Migrate(app, db, compare_type=True, compare_server_default=True)
 ia_client = InternetArchive(
     access_key=app.config['IA_S3_ACCESS_KEY_ID'],
     secret_key=app.config['IA_S3_SECRET_ACCESS_KEY_ID'],
