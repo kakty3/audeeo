@@ -38,12 +38,12 @@ def index():
         app.logger.info('Adding record to db...')
         basename = os.path.splitext(file.filename)[0]
         title = secure_filename(slugify(basename) or basename)
-        f = models.File(filename=title, url=file_url)
+        f = models.Episode(title=title, url=file_url)
         db.session.add(f)
         db.session.commit()
 
         app.logger.info('Updating feed...')
         feed.update_feed(ia_identifier)
 
-    files = models.File.query.order_by(models.File.created_at.desc()).all()
-    return render_template('index.html', files=files, upload_form=upload_form)
+    episodes = models.Episode.query.order_by(models.Episode.created_at.desc()).all()
+    return render_template('index.html', episodes=episodes, upload_form=upload_form)

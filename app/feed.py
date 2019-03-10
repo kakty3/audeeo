@@ -20,11 +20,11 @@ def generate_feed():
     fg.description('Audeeo test feed description')
     fg.link(href='https://exmaple.com', rel='self')
 
-    for file in models.File.query.all():
+    for episode in models.Episode.query.all():
         fe = fg.add_entry()
-        fe.id(file.url)
-        fe.title(file.filename)
-        fe.enclosure(file.url, 0, 'audio/mpeg')
+        fe.id(episode.url)
+        fe.title(episode.title)
+        fe.enclosure(episode.url, 0, 'audio/mpeg')
 
     return fg.rss_str(pretty=True)
 

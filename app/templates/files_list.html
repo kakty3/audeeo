@@ -1,8 +1,0 @@
-<ul>
-    {% for file in files %}
-    <li>
-        <a href="{{ file.url }}" target="_blank">{{ file.filename }}</a>&nbsp;
-        <span style='font-size: 0.8em; color: gray'>{{ file.created_at.strftime('%d %b %H:%M') }}</span>
-    </li>
-    {% endfor %}
-</ul>
