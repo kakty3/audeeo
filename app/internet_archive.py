@@ -53,6 +53,7 @@ class InternetArchive(object):
         item = self.get_item(identifier)
         if not force and item.get_file(key).exists:
             raise KeyExists(identifier=identifier, key=key)
+        
         return item.upload_file(file, key)
 
     @staticmethod

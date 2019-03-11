@@ -1,4 +1,5 @@
 import tempfile
+from email.utils import formatdate
 
 from feedgen.feed import FeedGenerator
 
@@ -24,7 +25,8 @@ def generate_feed():
         fe = fg.add_entry()
         fe.id(episode.url)
         fe.title(episode.title)
-        fe.enclosure(episode.url, 0, 'audio/mpeg')
+        fe.enclosure(episode.url, str(episode.file_size), 'audio/mpeg')
+        fe.pubDate(formatdate(episode.created_at.timestamp()))
 
     return fg.rss_str(pretty=True)
 
@@ -35,7 +37,7 @@ def update_feed(ia_identifier):
     with tempfile.TemporaryFile() as fp:
         fp.write(feed_body)
         fp.seek(0)
-        ia_client.upload(
+        return ia_client.upload(
             identifier=ia_identifier,
             file=fp,
             key=feed_ia_key,
