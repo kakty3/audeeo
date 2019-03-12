@@ -6,6 +6,9 @@ from feedgen.feed import FeedGenerator
 from . import models, ia_client
 
 
+FEED_KEY = 'feed.xml'
+
+
 def generate_feed():
     """Generate podcast RSS feed
     Spec: iTunes Podcast RSS: https://github.com/simplepie/simplepie-ng/wiki/Spec:-iTunes-Podcast-RSS
@@ -31,7 +34,6 @@ def generate_feed():
     return fg.rss_str(pretty=True)
 
 def update_feed(ia_identifier):
-    feed_ia_key = 'feed.xml'
     feed_body = generate_feed()
     
     with tempfile.TemporaryFile() as fp:
@@ -40,6 +42,6 @@ def update_feed(ia_identifier):
         return ia_client.upload(
             identifier=ia_identifier,
             file=fp,
-            key=feed_ia_key,
+            key=FEED_KEY,
             force=True
         )

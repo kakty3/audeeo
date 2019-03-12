@@ -57,5 +57,5 @@ class InternetArchive(object):
         return item.upload_file(file, key)
 
     @staticmethod
-    def get_public_url(identifier, key):
+    def get_file_url(identifier, key):
         return f'https://archive.org/download/{identifier}/{key}'

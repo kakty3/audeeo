@@ -13,6 +13,7 @@ from .utils import is_audio
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
+    ia_identifier = app.config['INTERNET_ARCHIVE_IDENTIFIER']
     upload_form = forms.UploadFileForm()
 
     if upload_form.validate_on_submit():
@@ -24,12 +25,11 @@ def index():
             
             return redirect(request.url)
 
-        ia_identifier = app.config['INTERNET_ARCHIVE_IDENTIFIER']
         app.logger.info('Uploading file...')
         file_key = uuid.uuid4().hex + os.path.splitext(secure_filename(file.filename))[1]
         response = ia_client.upload(identifier=ia_identifier, file=file, key=file_key)
         
-        file_url = ia_client.get_public_url(ia_identifier, file_key)
+        file_url = ia_client.get_file_url(ia_identifier, file_key)
         message = 'File URL: {url}'.format(url=file_url)
         app.logger.info(message)
         flash(message, 'info')
@@ -46,4 +46,5 @@ def index():
         feed.update_feed(ia_identifier)
 
     episodes = models.Episode.query.order_by(models.Episode.created_at.desc()).all()
-    return render_template('index.html', episodes=episodes, upload_form=upload_form)
+    feed_url = ia_client.get_file_url(ia_identifier, feed.FEED_KEY)
+    return render_template('index.html', episodes=episodes, upload_form=upload_form, feed_url=feed_url)
