@@ -11,10 +11,10 @@ class Config(object):
     SECRET_KEY = os.getenv('FLASK_SECRET_KEY')
     SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL']
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    REDIS_URL = os.environ['REDIS_URL']
     INTERNET_ARCHIVE_IDENTIFIER = 'podcast-hosting-test-Ia8gi'
     IA_S3_ACCESS_KEY_ID = os.getenv('IA_S3_ACCESS_KEY_ID')
     IA_S3_SECRET_ACCESS_KEY_ID = os.getenv('IA_S3_SECRET_ACCESS_KEY_ID')
-
 
 class ProductionConfig(Config):
     DEBUG = False
