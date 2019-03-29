@@ -8,8 +8,9 @@ from flask_sqlalchemy import SQLAlchemy
 from transliterate import slugify
 from werkzeug.utils import secure_filename
 
-from . import app, db, models, forms, ia_client, feed
+from . import app, models, forms, ia_client, feed
 from app import utils
+from .database import db
 
 
 @app.route('/', methods=['GET', 'POST'])
