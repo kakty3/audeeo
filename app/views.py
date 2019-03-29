@@ -3,22 +3,24 @@ import uuid
 import tempfile
 
 from flask import Flask, request, flash, redirect, url_for, send_from_directory, render_template
+from flask_security import login_required
 from flask_sqlalchemy import SQLAlchemy
-from werkzeug.utils import secure_filename
 from transliterate import slugify
+from werkzeug.utils import secure_filename
 
 from . import app, db, models, forms, ia_client, feed
-from .utils import is_audio
+from app import utils
 
 
 @app.route('/', methods=['GET', 'POST'])
+@login_required
 def index():
     ia_identifier = app.config['INTERNET_ARCHIVE_IDENTIFIER']
     upload_form = forms.UploadFileForm()
 
     if upload_form.validate_on_submit():
         file = upload_form.file.data
-        if not is_audio(file):
+        if not utils.is_audio(file):
             message = 'File is not audio'
             flash(message, 'error')
             app.logger.info(message)
