@@ -4,8 +4,8 @@ from flask import Flask
 from flask_security import Security, SQLAlchemySessionUserDatastore
 from flask_migrate import Migrate
 
-from . import internet_archive
-from .database import db
+from audeeo import internet_archive, models
+from audeeo.database import db
 
 # Create app
 app = Flask(__name__, instance_relative_config=True)
@@ -21,9 +21,10 @@ migrate = Migrate(app, db, compare_type=True, compare_server_default=True)
 # Create InternetArchive client
 ia_client = internet_archive.InternetArchive(
     access_key=app.config['IA_S3_ACCESS_KEY_ID'],
-    secret_key=app.config['IA_S3_SECRET_ACCESS_KEY_ID'],)
+    secret_key=app.config['IA_S3_SECRET_ACCESS_KEY_ID'],
+)
 
-from . import models, views
+from audeeo import views
 
 # Setup Flask-Security
 user_datastore = SQLAlchemySessionUserDatastore(db.session, models.User, models.Role)

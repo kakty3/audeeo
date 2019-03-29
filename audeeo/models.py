@@ -4,7 +4,7 @@ from sqlalchemy.orm import relationship, backref
 from sqlalchemy.sql.functions import now as sql_now
 from sqlalchemy.sql.expression import text
 
-from .database import db
+from audeeo.database import db
 
 
 class Episode(db.Model):

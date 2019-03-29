@@ -8,9 +8,8 @@ from flask_sqlalchemy import SQLAlchemy
 from transliterate import slugify
 from werkzeug.utils import secure_filename
 
-from . import app, models, forms, ia_client, feed
-from app import utils
-from .database import db
+from audeeo import app, models, forms, ia_client, feed, utils
+from audeeo.database import db
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -46,7 +45,7 @@ def index():
         db.session.commit()
 
         app.logger.info('Updating feed...')
-        feed.update_feed(ia_identifier)
+        feed.update_feed(ia_identifier, ia_client)
 
     episodes = models.Episode.query.order_by(models.Episode.created_at.desc()).all()
     feed_url = ia_client.get_file_url(ia_identifier, feed.FEED_KEY)

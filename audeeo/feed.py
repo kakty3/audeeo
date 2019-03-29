@@ -3,7 +3,7 @@ from email.utils import formatdate
 
 from feedgen.feed import FeedGenerator
 
-from . import models, ia_client
+from audeeo import models
 
 
 FEED_KEY = 'feed.xml'
@@ -33,7 +33,7 @@ def generate_feed():
 
     return fg.rss_str(pretty=True)
 
-def update_feed(ia_identifier):
+def update_feed(ia_identifier, ia_client):
     feed_body = generate_feed()
     
     with tempfile.TemporaryFile() as fp:
