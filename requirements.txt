@@ -1,8 +1,11 @@
+bcrypt
 feedgen
 filetype
 flask
-Flask-Migrate
-Flask-SQLAlchemy
+flask-migrate
+flask-security>=3.0.0,<4.0.0
+flask-sqlalchemy
+flask-sqlalchemy-session
 flask-wtf
 internetarchive
 psycopg2-binary

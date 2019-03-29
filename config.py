@@ -9,6 +9,7 @@ class Config(object):
     TESTING = False
     CSRF_ENABLED = True
     SECRET_KEY = os.getenv('FLASK_SECRET_KEY')
+    SECURITY_PASSWORD_SALT = os.getenv('FLASK_SECRET_KEY')
     SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL']
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     INTERNET_ARCHIVE_IDENTIFIER = 'podcast-hosting-test-Ia8gi'
