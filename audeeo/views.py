@@ -1,6 +1,6 @@
 import os
-import uuid
 import tempfile
+import uuid
 
 from flask import Flask, request, flash, redirect, url_for, send_from_directory, render_template
 from flask_security import login_required
