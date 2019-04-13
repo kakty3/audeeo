@@ -1,6 +1,6 @@
 <ul>
     {% for episode in episodes %}
-    <li>
+    <li class='episodes-list__episode'>
         <a href="{{ episode.url }}" target="_blank">{{ episode.title }}</a>&nbsp;
         <span style='font-size: 0.8em; color: gray'>{{ episode.created_at.strftime('%d %b %H:%M') }}</span>
     </li>
