@@ -1,0 +1,9 @@
+.episodes-list__episode {
+    list-style-type: none;
+    padding: 10px;
+    width: 500px;
+}
+
+.episodes-list__episode:hover {
+    background-color: rgba(83.3%, 94.1%, 93.5%, 0.503)
+}
