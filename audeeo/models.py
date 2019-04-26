@@ -7,12 +7,17 @@ from sqlalchemy.sql.functions import now as sql_now
 from audeeo.database import db
 
 
+feed_episode_table = Table('feeds_episodes', db.Model.metadata,
+    Column('feed_id', Integer, ForeignKey('feed.id')),
+    Column('episode_id', Integer, ForeignKey('episode.id'))
+)
+
 class Episode(db.Model):
     __tablename__ = 'episode'
 
     id = Column(Integer, primary_key=True)
-    title = Column(String())
-    url = Column(String(), unique=True)
+    title = Column(String(), nullable=False)
+    url = Column(String(), unique=True, nullable=False)
     created_at = Column(DateTime(timezone=True), server_default=sql_now())
     pub_date = Column(DateTime(timezone=True), server_default=sql_now())
     file_size = Column(Integer, server_default=text('0'))
@@ -47,3 +52,16 @@ class User(db.Model, UserMixin):
     confirmed_at = Column(DateTime())
     roles = relationship('Role', secondary='roles_users',
                          backref=backref('users', lazy='dynamic'))
+    feeds = relationship('Feed', backref='owner', lazy='dynamic')
+
+@event.listens_for(User, 'init')
+def receive_init(target, args, kwargs):
+    target.feeds.append(Feed(title='Feed', owner_id=target.id))
+
+class Feed(db.Model):
+    __tablename__ = 'feed'
+    id = Column(Integer, primary_key=True)
+    title = Column(String(255), nullable=False)
+    owner_id = Column(Integer, ForeignKey('user.id'), nullable=False)
+    episodes = relationship('Episode', secondary=feed_episode_table)
+
