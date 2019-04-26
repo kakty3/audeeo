@@ -8,7 +8,7 @@ from audeeo.database import db
 
 
 class Episode(db.Model):
-    __tablename__ = 'episodes'
+    __tablename__ = 'episode'
 
     id = Column(Integer, primary_key=True)
     title = Column(String())

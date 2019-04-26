@@ -17,10 +17,10 @@ depends_on = None
 
 
 def upgrade():
-    op.rename_table('files', 'episodes')
-    op.alter_column('episodes', 'filename', new_column_name='title')
+    op.rename_table('files', 'episode')
+    op.alter_column('episode', 'filename', new_column_name='title')
 
 
 def downgrade():
-    op.rename_table('episodes', 'files')
+    op.rename_table('episode', 'files')
     op.alter_column('files', 'title', name='filename')
