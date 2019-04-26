@@ -1,8 +1,8 @@
 from flask_security import UserMixin, RoleMixin
-from sqlalchemy import Column, Integer, String, DateTime, Boolean, ForeignKey
+from sqlalchemy import Column, Integer, String, DateTime, Boolean, ForeignKey, event, Table
 from sqlalchemy.orm import relationship, backref
-from sqlalchemy.sql.functions import now as sql_now
 from sqlalchemy.sql.expression import text
+from sqlalchemy.sql.functions import now as sql_now
 
 from audeeo.database import db
 

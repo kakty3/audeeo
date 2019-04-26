@@ -1,8 +1,8 @@
 import os
 
 from flask import Flask
-from flask_security import Security, SQLAlchemySessionUserDatastore
 from flask_migrate import Migrate
+from flask_security import Security, SQLAlchemySessionUserDatastore
 
 from audeeo import internet_archive, models
 from audeeo.database import db

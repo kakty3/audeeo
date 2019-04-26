@@ -1,5 +1,5 @@
-import tempfile
 from email.utils import formatdate
+import tempfile
 
 from feedgen.feed import FeedGenerator
 
