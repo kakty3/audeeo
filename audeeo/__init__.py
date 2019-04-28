@@ -7,12 +7,13 @@ from flask_security import Security, SQLAlchemySessionUserDatastore
 from audeeo import internet_archive, models
 from audeeo.database import db
 
+
 # Create app
 app = Flask(__name__, instance_relative_config=True)
 app.config.from_object(os.environ['APP_SETTINGS'])
 app.config.from_pyfile('config.py', silent=True)
 
-# # Setup database
+# Setup database
 db.init_app(app)
 
 # Setup Flask-Migrate
