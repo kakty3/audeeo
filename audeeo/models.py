@@ -58,13 +58,17 @@ class User(db.Model, UserMixin):
 
 @event.listens_for(User, 'init')
 def receive_init(target, args, kwargs):
-    feed = Feed(title='Feed', owner_id=target.id, ia_identifier=str(uuid4()))
+    feed = Feed(title='Feed',
+                owner_id=target.id,
+                ia_identifier=str(uuid4()),
+                description=f'My default feed')
     target.feeds.append(feed)
 
 class Feed(db.Model):
     __tablename__ = 'feed'
     id = Column(Integer, primary_key=True)
     title = Column(String(255), nullable=False)
+    description = Column(String(255), nullable=False)
     owner_id = Column(Integer, ForeignKey('user.id'), nullable=False)
     episodes = relationship('Episode', secondary=feed_episode_table)
     ia_identifier = Column(String(50), nullable=False)
