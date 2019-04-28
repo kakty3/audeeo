@@ -14,7 +14,7 @@ services:
       - ./migrations:/srv/audeeo/migrations
     env_file: .env
     environment:
-      DATABASE_URL: "postgresql://admin:${POSTGRES_PASSWORD}@db/podcast"
+      DATABASE_URL: "postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db/${POSTGRES_DB}"
       APP_SETTINGS: "config.DevelopmentConfig"
       FLASK_APP: "audeeo"
       FLASK_ENV: "development"
@@ -27,8 +27,8 @@ services:
     ports:
       - "15432:5432"
     environment:
-      POSTGRES_DB: podcast
-      POSTGRES_USER: admin
+      POSTGRES_DB: "${POSTGRES_DB}"
+      POSTGRES_USER: "${POSTGRES_USER}"
       POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
     volumes:
       - type: bind
