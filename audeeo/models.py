@@ -1,3 +1,5 @@
+from uuid import uuid4
+
 from flask_security import UserMixin, RoleMixin
 from sqlalchemy import Column, Integer, String, DateTime, Boolean, ForeignKey, event, Table
 from sqlalchemy.orm import relationship, backref
@@ -56,7 +58,8 @@ class User(db.Model, UserMixin):
 
 @event.listens_for(User, 'init')
 def receive_init(target, args, kwargs):
-    target.feeds.append(Feed(title='Feed', owner_id=target.id))
+    feed = Feed(title='Feed', owner_id=target.id, ia_identifier=str(uuid4()))
+    target.feeds.append(feed)
 
 class Feed(db.Model):
     __tablename__ = 'feed'
@@ -64,4 +67,4 @@ class Feed(db.Model):
     title = Column(String(255), nullable=False)
     owner_id = Column(Integer, ForeignKey('user.id'), nullable=False)
     episodes = relationship('Episode', secondary=feed_episode_table)
-
+    ia_identifier = Column(String(50), nullable=False)
