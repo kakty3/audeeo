@@ -20,6 +20,7 @@
     {% endwith %}
     <a href="{{ feed_url }}" target="_blank">Feed</a>
     <a href="{{ url_root }}/logout">Logout</a>
+    {{ current_user.email }}
     {% block body %}{% endblock %}
 </body>
 
