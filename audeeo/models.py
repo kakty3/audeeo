@@ -72,7 +72,7 @@ class Feed(db.Model):
     title = Column(String(255), nullable=False)
     description = Column(String(255), nullable=False)
     owner_id = Column(Integer, ForeignKey('user.id'), nullable=False)
-    episodes = relationship('Episode', secondary=feed_episode_table)
+    episodes = relationship('Episode', secondary=feed_episode_table, lazy='dynamic')
     ia_identifier = Column(String(50), nullable=False)
 
     def get_rss(self, pretty=False):

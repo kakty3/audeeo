@@ -62,9 +62,10 @@ def index():
             )
 
     feed_url = ia_client.get_file_url(user_feed.ia_identifier, FEED_KEY)
-    
+    episodes = user_feed.episodes.order_by(models.Episode.created_at.desc()).all()
+
     return render_template(
         'index.html',
-        episodes=user_feed.episodes,
+        episodes=episodes,
         upload_form=upload_form,
         feed_url=feed_url)
