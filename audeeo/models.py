@@ -1,5 +1,7 @@
+from email.utils import formatdate
 from uuid import uuid4
 
+from feedgen.feed import FeedGenerator
 from flask_security import UserMixin, RoleMixin
 from sqlalchemy import Column, Integer, String, DateTime, Boolean, ForeignKey, event, Table
 from sqlalchemy.orm import relationship, backref
@@ -72,3 +74,27 @@ class Feed(db.Model):
     owner_id = Column(Integer, ForeignKey('user.id'), nullable=False)
     episodes = relationship('Episode', secondary=feed_episode_table)
     ia_identifier = Column(String(50), nullable=False)
+
+    def get_rss(self, pretty=False):
+        """Generate podcast RSS feed
+        Spec: iTunes Podcast RSS: https://github.com/simplepie/simplepie-ng/wiki/Spec:-iTunes-Podcast-RSS
+        
+        :return: Contents of podcast RSS feed
+        :rtype: bytes
+        """
+
+        fg = FeedGenerator()
+        fg.load_extension('podcast')
+
+        fg.title(self.title)
+        fg.description(self.description)
+        fg.link(href='https://example.com', rel='self')
+
+        for episode in self.episodes:
+            fe = fg.add_entry()
+            fe.id(episode.url)
+            fe.title(episode.title)
+            fe.enclosure(episode.url, str(episode.file_size), 'audio/mpeg')
+            fe.pubDate(formatdate(episode.created_at.timestamp()))
+
+        return fg.rss_str(pretty=pretty)
