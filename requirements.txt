@@ -10,4 +10,3 @@ flask-sqlalchemy-session
 flask-wtf
 internetarchive
 psycopg2-binary
-transliterate

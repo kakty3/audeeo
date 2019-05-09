@@ -6,7 +6,6 @@ from flask import Flask, request, flash, redirect, url_for, send_from_directory,
 from flask_login import current_user
 from flask_security import login_required
 from flask_sqlalchemy import SQLAlchemy
-from transliterate import slugify
 from werkzeug.utils import secure_filename
 
 from audeeo import app, models, forms, ia_client, utils
@@ -39,10 +38,9 @@ def index():
         app.logger.info(message)
         flash(message, 'info')
         
-        app.logger.info('Add episode to db')
-        basename = os.path.splitext(file.filename)[0]
-        title = secure_filename(slugify(basename) or basename)
         file_size = int(response.request.headers['Content-Length'])
+        title = os.path.splitext(file.filename)[0].strip()
+        app.logger.debug('Insert episode to db: %s', dict(title=title, url=file_url, file_size=file_size))
         episode = models.Episode(title=title, url=file_url, file_size=file_size)
         user_feed.episodes.append(episode)
         db.session.add(episode)
