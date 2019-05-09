@@ -31,7 +31,7 @@ def index():
             return redirect(request.url)
 
         app.logger.info('Upload file')
-        file_key = uuid.uuid4().hex + os.path.splitext(secure_filename(file.filename))[1]
+        file_key = uuid.uuid4().hex + os.path.splitext(file.filename)[1]
         response = ia_client.upload(identifier=user_feed.ia_identifier, file=file, key=file_key)
         
         file_url = ia_client.get_file_url(user_feed.ia_identifier, file_key)
