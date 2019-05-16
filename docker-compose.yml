@@ -16,7 +16,6 @@ services:
     environment:
       DATABASE_URL: "postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db/${POSTGRES_DB}"
       APP_SETTINGS: "config.DevelopmentConfig"
-      FLASK_APP: "audeeo"
       FLASK_ENV: "development"
     command: ["wait-for-it", "db:5432", "--timeout=30", "--strict", "--",
               "flask", "run", "--host", "0.0.0.0", "--port", "8000"]
