@@ -8,7 +8,7 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /srv/audeeo
 
 COPY requirements.txt requirements.txt
-RUN pip install --trusted-host pypi.python.org -r requirements.txt
+RUN pip install --trusted-host pypi.python.org --disable-pip-version-check -r requirements.txt
 
 COPY . /srv/audeeo
 
