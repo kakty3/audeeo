@@ -1,4 +1,5 @@
 from email.utils import formatdate
+from hashlib import md5
 from uuid import uuid4
 
 from feedgen.feed import FeedGenerator
@@ -88,7 +89,9 @@ class Feed(db.Model):
 
         fg.title(self.title)
         fg.description(self.description)
-        fg.link(href='https://example.com', rel='self')
+        link = 'https://example.com'
+        fg.link(href=link, rel='self')
+        fg.image(url=self.artwork(), title=self.title, link=link)
 
         for episode in self.episodes:
             fe = fg.add_entry()
@@ -98,3 +101,8 @@ class Feed(db.Model):
             fe.pubDate(formatdate(episode.created_at.timestamp()))
 
         return fg.rss_str(pretty=pretty)
+
+    def artwork(self, size=128):
+        digest = md5(self.title.lower().encode('utf-8')).hexdigest()
+        return 'https://www.gravatar.com/avatar/{}?d=identicon&s={}'.format(digest, size)
+
