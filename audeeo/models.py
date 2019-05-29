@@ -92,6 +92,9 @@ class Feed(db.Model):
         link = 'https://example.com'
         fg.link(href=link, rel='self')
         fg.image(url=self.artwork(), title=self.title, link=link)
+        author = self.owner.username or 'Unknown'
+        fg.podcast.itunes_author(author)
+        fg.podcast.itunes_owner(author, self.owner.email)
 
         for episode in self.episodes:
             fe = fg.add_entry()
