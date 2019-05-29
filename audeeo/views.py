@@ -2,11 +2,9 @@ import os
 import tempfile
 import uuid
 
-from flask import Flask, request, flash, redirect, url_for, send_from_directory, render_template
+from flask import request, flash, redirect, render_template
 from flask_login import current_user
 from flask_security import login_required
-from flask_sqlalchemy import SQLAlchemy
-from werkzeug.utils import secure_filename
 
 from audeeo import app, models, forms, ia_client, utils
 from audeeo.database import db
@@ -33,22 +31,22 @@ def index():
             message = 'Not audio file'
             flash(message, 'error')
             app.logger.info(message)
-            
+
             return redirect(request.url)
 
         app.logger.info('Upload file')
         file_key = uuid.uuid4().hex + os.path.splitext(file.filename)[1]
         response = ia_client.upload(identifier=user_feed.ia_identifier, file=file, key=file_key)
-        
+
         file_url = ia_client.get_file_url(user_feed.ia_identifier, file_key)
         message = 'Episode upoaded: {url}'.format(url=file_url)
         app.logger.info(message)
         flash(message, 'info')
-        
+
         file_size = int(response.request.headers['Content-Length'])
         title = os.path.splitext(file.filename)[0].strip()
-        app.logger.debug('Insert episode to db: %s', dict(title=title, url=file_url, file_size=file_size))
         episode = models.Episode(title=title, url=file_url, file_size=file_size)
+        app.logger.debug('Episode: %s', episode)
         user_feed.episodes.append(episode)
         db.session.add(episode)
         db.session.commit()
@@ -56,12 +54,12 @@ def index():
         app.logger.info('Update feed')
         user_feed_rss = user_feed.get_rss()
         # TODO: try use SpooledTemporaryFile
-        with tempfile.TemporaryFile() as fp:
-            fp.write(user_feed_rss)
-            fp.seek(0)
+        with tempfile.TemporaryFile() as temp_file:
+            temp_file.write(user_feed_rss)
+            temp_file.seek(0)
             ia_client.upload(
                 identifier=user_feed.ia_identifier,
-                file=fp,
+                file=temp_file,
                 key=FEED_KEY,
                 force=True
             )
