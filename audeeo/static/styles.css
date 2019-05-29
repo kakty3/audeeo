@@ -7,3 +7,12 @@
 .episodes-list__episode:hover {
     background-color: rgba(83.3%, 94.1%, 93.5%, 0.503)
 }
+
+.feed-info {
+    border: 1px solid black;
+    padding: 1em;
+}
+
+.resize_none {
+    resize: none;
+}

@@ -17,10 +17,17 @@ FEED_KEY = 'feed.xml'
 @app.route('/', methods=['GET', 'POST'])
 @login_required
 def index():
-    upload_form = forms.UploadFileForm()
     user_feed = current_user.feeds.first()
 
-    if upload_form.validate_on_submit():
+    upload_form = forms.UploadFileForm(prefix='upload_form')
+    feed_info_form = forms.FeedInfoForm(prefix='feed_info_form')
+
+    if feed_info_form.data and feed_info_form.validate_on_submit():
+        user_feed.title = feed_info_form.title.data
+        user_feed.description = feed_info_form.description.data
+        db.session.commit()
+
+    elif upload_form.data and upload_form.validate_on_submit():
         file = upload_form.file.data
         if not utils.is_audio(file):
             message = 'Not audio file'
@@ -66,4 +73,6 @@ def index():
         'index.html',
         episodes=episodes,
         upload_form=upload_form,
+        feed_info_form=feed_info_form,
+        feed=user_feed,
         feed_url=feed_url)
