@@ -13,9 +13,6 @@ class FeedInfoForm(FlaskForm):
 class UploadFileForm(FlaskForm):
     file = FileField(
         'Audio file',
-        validators=[
-            FileRequired(),
-            FileAllowed(AUDIO_EXTENSIONS, 'Audio files only')
-        ]
+        validators=[FileRequired(), FileAllowed(AUDIO_EXTENSIONS, 'Audio files only')]
     )
     submit = SubmitField('Upload')

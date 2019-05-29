@@ -48,7 +48,7 @@ def index():
         episode = models.Episode(title=title, url=file_url, file_size=file_size)
         app.logger.debug('Episode: %s', episode)
         user_feed.episodes.append(episode)
-        db.session.add(episode)
+        # db.session.add(episode)
         db.session.commit()
 
         app.logger.info('Update feed')
