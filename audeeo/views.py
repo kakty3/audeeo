@@ -20,12 +20,12 @@ def index():
     upload_form = forms.UploadFileForm(prefix='upload_form')
     feed_info_form = forms.FeedInfoForm(prefix='feed_info_form')
 
-    if feed_info_form.data and feed_info_form.validate_on_submit():
+    if feed_info_form.submit.data and feed_info_form.validate_on_submit():
         user_feed.title = feed_info_form.title.data
         user_feed.description = feed_info_form.description.data
         db.session.commit()
 
-    elif upload_form.data and upload_form.validate_on_submit():
+    if upload_form.submit.data and upload_form.validate_on_submit():
         file = upload_form.file.data
         if not utils.is_audio(file):
             message = 'Not audio file'
