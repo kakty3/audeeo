@@ -2,9 +2,14 @@
 <html>
 
 <head>
-    <title>{% block title %}Audeeo{% endblock %}</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.png') }}" type="image/png">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}" />
+
+    <title>{% block title %}Audeeo{% endblock %}</title>
 </head>
 
 <script>
@@ -15,19 +20,19 @@
 </script>
 
 <body>
-    {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-    <ul class=flashes>
-        {% for category, message in messages %}
-        <li>[{{category}}]&nbsp;{{ message }}</li>
-        {% endfor %}
-    </ul>
-    <hr>
-    {% endif %}
-    {% endwith %}
-    <a href="{{ feed_url }}" target="_blank">Feed</a>
+    <a href=" {{ feed_url }}" target="_blank">Feed</a>
     <a href="{{ url_root }}/logout">Logout</a>
     {{ current_user.email }}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    {% for category, message in messages %}
+    <div class="alert alert-{{ category }} m-1" role="alert">
+        {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+
     {% block body %}{% endblock %}
 </body>
 

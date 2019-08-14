@@ -1,38 +1,68 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %}1
 {% block body %}
-
-<div class='feed-info'>
-    <h3>Feed info</h3>
-    <img src="{{ feed.artwork() }}">
-    <form method="POST">
-        {{ feed_info_form.hidden_tag() }}
-        <div>
-            {{ feed_info_form.title.label }}&nbsp;
-            {{ feed_info_form.title(value=feed.title) }}
-            {% for error in feed_info_form.title.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
+<div class="container">
+    <div class="row mb-4">
+        <div class="col-sm-3 align-self-center">
+            <img src="{{ feed.artwork() }}">
         </div>
-        <div>
-            {{ feed_info_form.description.label }}&nbsp;
-            {% set _ = feed_info_form.description.process_data(feed.description) %}
-            {{ feed_info_form.description(rows=3, cols=50, class='resize_none') }}
-            {% for error in feed_info_form.description.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
+        <div class="col">
+            <form method="POST">
+                {{ feed_info_form.hidden_tag() }}
+                <div class="form-group">
+                    {{ feed_info_form.title.label }}
+                    {{ feed_info_form.title(value=feed.title, class='form-control') }}
+                    {% for error in feed_info_form.title.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                </div>
+                <div class="form-group">
+                    {{ feed_info_form.description.label }}
+                    {% set _ = feed_info_form.description.process_data(feed.description) %}
+                    {{ feed_info_form.description(rows=2, cols=50, class='form-control') }}
+                    {% for error in feed_info_form.description.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                </div>
+                {{ feed_info_form.submit(class='btn btn-primary') }}
+            </form>
         </div>
-        {{ feed_info_form.submit }}
-    </form>
+    </div>
+    <div class="row">
+        <div class="col">
+            <form id="upload_form" method="POST" enctype="multipart/form-data">
+                {{ upload_form.hidden_tag() }}
+                <label class="btn btn-primary btn-block">
+                    + Add new episode {{ upload_form.file(accept='audio/*', hidden=True) }}
+                </label>
+                {% for error in upload_form.file.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+                {{ upload_form.submit(hidden=True) }}
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="container">
+                {% for episode in episodes %}
+                <div class="row border rounded p-2 mb-2 mt-2">
+                    <div class="col-sm-8">
+                        <a href="{{ episode.url }}" target="_blank">{{ episode.title }}</a>
+                    </div>
+                    <div class="col-sm-4 text-secondary text-right">
+                        {{ episode.created_at.strftime('%d %b %H:%M') }}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
 </div>
-<h1>Upload file</h1>
-<form method="POST" enctype="multipart/form-data">
-    {{ upload_form.hidden_tag() }}
-    {{ upload_form.file.label }}<br>
-    {{ upload_form.file(accept='audio/*') }}<br>
-    {% for error in upload_form.file.errors %}
-    <span style="color: red;">[{{ error }}]</span>
-    {% endfor %}
-    {{ upload_form.submit }}
-</form>
-{% include 'episodes_list.html' %}
+
+<script>
+    document.getElementById("upload_form-file").onchange = function () {
+        document.getElementById('upload_form-submit').click();
+    };
+</script>
+
 {% endblock%}
