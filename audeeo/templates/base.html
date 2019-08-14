@@ -20,9 +20,17 @@
 </script>
 
 <body>
-    <a href=" {{ feed_url }}" target="_blank">Feed</a>
-    <a href="{{ url_root }}/logout">Logout</a>
-    {{ current_user.email }}
+    <nav class="navbar sticky-top navbar-expand-sm navbar-light bg-light">
+        <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+            <span class="navbar-text">
+                {{ current_user.email }}
+            </span>
+            <div class="navbar-nav">
+                <a class="nav-item nav-link" href="{{ feed_url }}" target="_blank">Feed</a>
+                <a class="nav-item nav-link" href="{{ url_root }}/logout">Logout</a>
+            </div>
+        </div>
+    </nav>
     {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
     {% for category, message in messages %}
