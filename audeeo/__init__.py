@@ -2,7 +2,7 @@ import os
 
 from flask import Flask
 from flask_migrate import Migrate
-import flask_security
+from flask_security import Security, SQLAlchemySessionUserDatastore
 
 from audeeo import internet_archive, models
 from audeeo.database import db
@@ -28,22 +28,9 @@ ia_client = internet_archive.InternetArchive(
 from audeeo import views
 
 # Setup Flask-Security
-user_datastore = flask_security.SQLAlchemySessionUserDatastore(db.session, models.User, models.Role)
-security = flask_security.Security(app, user_datastore)
+user_datastore = SQLAlchemySessionUserDatastore(db.session, models.User, models.Role)
+security = Security(app, user_datastore)
 
 @app.shell_context_processor
 def make_shell_context():
     return {'db': db, 'models': models, 'ia': ia_client}
-
-if app.config.get('AUTO_LOGIN_USER_EMAIL'):
-    app.logger.info('Auto-login enabled')
-    @app.before_request
-    def dev_login():
-        if flask_security.current_user.is_authenticated:
-            return
-        dev_user_email = app.config.get('AUTO_LOGIN_USER_EMAIL')
-        dev_user = models.User.query.filter_by(email=dev_user_email).first()
-        if not dev_user:
-            app.logger.info(f'Auto-login failed: user with email "{dev_user_email}" doesn\'t exists')
-            return
-        flask_security.utils.login_user(dev_user)

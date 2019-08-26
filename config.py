@@ -34,7 +34,7 @@ class StagingConfig(Config):
 class DevelopmentConfig(Config):
     DEVELOPMENT = True
     DEBUG = True
-    AUTO_LOGIN_USER_EMAIL = 'user@user.ru'
+
 
 class TestingConfig(Config):
     TESTING = True
