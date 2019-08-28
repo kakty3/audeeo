@@ -21,7 +21,6 @@ services:
 
   db:
     image: "postgres:11.2"
-    restart: always
     ports:
       - "15432:5432"
     environment:
