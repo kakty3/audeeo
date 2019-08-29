@@ -21,10 +21,11 @@ services:
         published: 80
         protocol: tcp
         mode: host
-      - target: 443
-        published: 443
-        protocol: tcp
-        mode: host
+      # TODO uncomment this, when domain is ready
+      # - target: 443
+      #   published: 443
+      #   protocol: tcp
+      #   mode: host
 
   app:
     build: .
