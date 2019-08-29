@@ -1,0 +1,69 @@
+version: "3.7"
+services:
+  traefik:
+    image: traefik:1.7
+    networks:
+      - traefik-net
+    volumes:
+      - type: bind
+        source: /var/run/docker.sock
+        target: /var/run/docker.sock
+      - type: bind
+        source: ./traefik.toml
+        target: /etc/traefik/traefik.toml
+      - type: volume
+        source: traefik_acme
+        target: /etc/traefik_acme/
+    ports:
+      # mapping traefik ports to host ports in host mode
+      # default mode (ingress) is known to cause issues w/ IPv6
+      - target: 80
+        published: 80
+        protocol: tcp
+        mode: host
+      - target: 443
+        published: 443
+        protocol: tcp
+        mode: host
+
+  app:
+    build: .
+    image: "sdemurin/audeeo:stable"
+    networks:
+      - traefik-net
+      - internal
+    depends_on:
+      - db
+    labels:
+       - traefik.backend=audeeo-server
+       - traefik.frontend.rule=PathPrefix:/
+       - traefik.port=8000
+       - traefik.docker.network=traefik-net
+    env_file: .env
+    environment:
+      DATABASE_URL: "postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db/${POSTGRES_DB}"
+      APP_SETTINGS: "config.ProductionConfig"
+      FLASK_ENV: "production"
+    command: ["wait-for-it", "db:5432", "--timeout=30", "--strict", "--",
+              "gunicorn", "-c", "gunicorn-conf.py", "wsgi:app"]
+  
+  db:
+    image: "postgres:11.2"
+    networks:
+      - internal
+    environment:
+      POSTGRES_DB: "${POSTGRES_DB}"
+      POSTGRES_USER: "${POSTGRES_USER}"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
+    volumes:
+      - db_data:/var/lib/postgresql/data/
+
+networks:
+  traefik-net:
+    name: traefik-net
+  internal:
+    internal: true
+
+volumes:
+  db_data:
+  traefik_acme:
