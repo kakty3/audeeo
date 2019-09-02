@@ -12,7 +12,7 @@ RUN pip install --trusted-host pypi.python.org --disable-pip-version-check -r re
 
 COPY . /srv/audeeo
 
-ENV FLASK_APP audeeo
+ENV FLASK_APP "audeeo:create_app('config.py')"
 
 EXPOSE 8000
 

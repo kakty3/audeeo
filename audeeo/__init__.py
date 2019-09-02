@@ -1,23 +1,33 @@
 import os
 
 from flask import Flask
-from flask_migrate import Migrate
-from flask_security import Security, SQLAlchemySessionUserDatastore
 
 from audeeo import internet_archive, models
 from audeeo.database import db
 
+def create_app(config_filename):
+    app = Flask(__name__, instance_relative_config=True)
+    app.config.from_object(os.environ['APP_SETTINGS'])
+    app.config.from_pyfile(config_filename, silent=True)
 
-# Create app
-app = Flask(__name__, instance_relative_config=True)
-app.config.from_object(os.environ['APP_SETTINGS'])
-app.config.from_pyfile('config.py', silent=True)
+    # Setup database
+    db.init_app(app)
 
-# Setup database
-db.init_app(app)
+    # Setup Flask-Migrate
+    from flask_migrate import Migrate
+    migrate = Migrate()
+    migrate.init_app(app, db=db, compare_type=True, compare_server_default=True)
 
-# Setup Flask-Migrate
-migrate = Migrate(app, db, compare_type=True, compare_server_default=True)
+    # Setup Flask-Security
+    import flask_security
+    user_datastore = flask_security.SQLAlchemySessionUserDatastore(db.session, models.User, models.Role)
+    security = flask_security.Security()
+    security.init_app(app, user_datastore)
+
+    return app
+
+
+app = create_app('config.py')
 
 # Create InternetArchive client
 ia_client = internet_archive.InternetArchive(
@@ -26,10 +36,6 @@ ia_client = internet_archive.InternetArchive(
 )
 
 from audeeo import views
-
-# Setup Flask-Security
-user_datastore = SQLAlchemySessionUserDatastore(db.session, models.User, models.Role)
-security = Security(app, user_datastore)
 
 @app.shell_context_processor
 def make_shell_context():
