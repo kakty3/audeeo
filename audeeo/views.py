@@ -2,17 +2,20 @@ import os
 import tempfile
 import uuid
 
-from flask import request, flash, redirect, render_template
+from flask import request, flash, redirect, render_template, Blueprint
+from flask import current_app as app
 from flask_login import current_user
 from flask_security import login_required
 
-from audeeo import app, models, forms, ia_client, utils
+from audeeo import models, forms, utils
 from audeeo.database import db
 
 
 FEED_KEY = 'feed.xml'
 
-@app.route('/', methods=['GET', 'POST'])
+bp = Blueprint('main', __name__)
+
+@bp.route('/', methods=['GET', 'POST'])
 @login_required
 def index():
     user_feed = current_user.feeds.first()
@@ -36,9 +39,9 @@ def index():
 
         app.logger.info('Upload file')
         file_key = uuid.uuid4().hex + os.path.splitext(file.filename)[1]
-        response = ia_client.upload(identifier=user_feed.ia_identifier, file=file, key=file_key)
+        response = app.ia_client.upload(identifier=user_feed.ia_identifier, file=file, key=file_key)
 
-        file_url = ia_client.get_file_url(user_feed.ia_identifier, file_key)
+        file_url = app.ia_client.get_file_url(user_feed.ia_identifier, file_key)
         message = 'Episode upoaded: {url}'.format(url=file_url)
         app.logger.info(message)
         flash(message, 'info')
@@ -57,14 +60,14 @@ def index():
         with tempfile.TemporaryFile() as temp_file:
             temp_file.write(user_feed_rss)
             temp_file.seek(0)
-            ia_client.upload(
+            app.ia_client.upload(
                 identifier=user_feed.ia_identifier,
                 file=temp_file,
                 key=FEED_KEY,
                 force=True
             )
 
-    feed_url = ia_client.get_file_url(user_feed.ia_identifier, FEED_KEY)
+    feed_url = app.ia_client.get_file_url(user_feed.ia_identifier, FEED_KEY)
     episodes = user_feed.episodes.order_by(models.Episode.created_at.desc()).all()
 
     return render_template(
