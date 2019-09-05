@@ -1,5 +1,6 @@
 import os
 
+import click
 from flask import Flask
 from flask_migrate import Migrate
 import flask_security
@@ -11,18 +12,12 @@ from audeeo.database import db
 def create_app():
     app = Flask(__name__)
     app.config.from_object(os.environ['APP_SETTINGS'])
-    app.config.from_pyfile(config_filename, silent=True)
 
-    # Setup database
     db.init_app(app)
 
-    # Setup Flask-Migrate
-    from flask_migrate import Migrate
     migrate = Migrate()
     migrate.init_app(app, db=db, compare_type=True, compare_server_default=True)
 
-    # Setup Flask-Security
-    import flask_security
     user_datastore = flask_security.SQLAlchemySessionUserDatastore(db.session, models.User, models.Role)
     app.security = flask_security.Security()
     app.security.init_app(app, user_datastore)
@@ -34,6 +29,7 @@ def create_app():
 
     app.register_blueprint(views.bp)
     register_shellcontext(app)
+    register_commands(app)
 
     return app
 
@@ -48,8 +44,11 @@ def register_shellcontext(app):
     app.shell_context_processor(shell_context)
 
 
-from audeeo import views
+@click.command(name='test')
+def run_tests():
+    import pytest
+    pytest.main(['-s', 'tests'])
 
-@app.shell_context_processor
-def make_shell_context():
-    return {'db': db, 'models': models, 'ia': ia_client}
+def register_commands(app):
+    """Register Click commands."""
+    app.cli.add_command(run_tests)
