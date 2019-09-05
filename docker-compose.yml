@@ -1,8 +1,8 @@
-version: "3.2"
+version: "3.7"
 services:
   app:
     build: .
-    image: "sdemurin/audeeo:0.0.1"
+    image: "sdemurin/audeeo:latest"
     depends_on:
       - db
     ports:
@@ -21,7 +21,6 @@ services:
 
   db:
     image: "postgres:11.2"
-    restart: always
     ports:
       - "15432:5432"
     environment:

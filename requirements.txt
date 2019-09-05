@@ -8,6 +8,7 @@ flask-security~=3.0.0
 flask-sqlalchemy
 flask-sqlalchemy-session
 flask-wtf
+gunicorn[gevent]
 internetarchive
 psycopg2-binary
 pytest~=5.1.1

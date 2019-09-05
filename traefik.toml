@@ -1,0 +1,31 @@
+# TODO fill domain, when it's ready
+# TODO uncomment https-related directives, when domain is ready
+# defaultEntryPoints=["http", "https"]
+defaultEntryPoints=["http"]
+
+[entryPoints]
+  [entryPoints.http]
+  address=":80"
+  #   [entryPoints.http.redirect]
+  #     entryPoint="https"
+  # [entryPoints.https]
+  # address=":443"
+  #   [entryPoints.https.tls]
+  #     [[entryPoints.https.tls.certificates]]
+
+[docker]
+endpoint = "unix:///var/run/docker.sock"
+# domain = "%domain%"
+watch = true
+network = "traefik-net"
+
+# [acme]
+#   email="acme@%domain%"
+#   storage="/etc/traefik_acme/acme.json"
+#   entryPoint="https"
+#   acmeLogging=true
+#   OnHostRule=true
+#   [acme.httpChallenge]
+#     entryPoint = "http"
+
+[accessLog]
