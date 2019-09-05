@@ -77,3 +77,8 @@ def index():
         feed_info_form=feed_info_form,
         feed=user_feed,
         feed_url=feed_url)
+
+
+@bp.route('/ping', methods=['GET'])
+def ping():
+    return 'pong'
