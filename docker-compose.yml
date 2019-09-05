@@ -1,6 +1,5 @@
 version: "3.2"
 services:
-  
   app:
     build: .
     image: "sdemurin/audeeo:0.0.1"
@@ -19,7 +18,7 @@ services:
       FLASK_ENV: "development"
     command: ["wait-for-it", "db:5432", "--timeout=30", "--strict", "--",
               "flask", "run", "--host", "0.0.0.0", "--port", "8000"]
-  
+
   db:
     image: "postgres:11.2"
     restart: always

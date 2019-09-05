@@ -79,7 +79,7 @@ class Feed(db.Model):
     def get_rss(self, pretty=False):
         """Generate podcast RSS feed
         Spec: iTunes Podcast RSS: https://github.com/simplepie/simplepie-ng/wiki/Spec:-iTunes-Podcast-RSS
-        
+
         :return: Contents of podcast RSS feed
         :rtype: bytes
         """
@@ -108,4 +108,3 @@ class Feed(db.Model):
     def artwork(self, size=128):
         digest = md5(self.title.lower().encode('utf-8')).hexdigest()
         return 'https://www.gravatar.com/avatar/{}?d=identicon&s={}'.format(digest, size)
-

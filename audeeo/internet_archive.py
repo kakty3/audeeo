@@ -38,22 +38,22 @@ class InternetArchive(object):
     # TODO: check key doesn't contain leading dots
     def upload(self, identifier, file, key, force=False):
         """Upload file to InternetArchive.org
-        
+
         :param identifier: Identifier of archive.org item
         :type identifier: str
-        
+
         :param file: The filepath or file-like object to upload.
-        
+
         :param key: Remote filename
         :type key: str
-        
+
         :param force: Force to upload file, even if it exists, defaults to False
         :param force: bool, optional
         """
         item = self.get_item(identifier)
         if not force and item.get_file(key).exists:
             raise KeyExists(identifier=identifier, key=key)
-        
+
         return item.upload_file(file, key)
 
     @staticmethod
