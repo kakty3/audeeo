@@ -1,8 +1,8 @@
 import os
 
 import click
-from flask import Flask
-from flask_migrate import Migrate
+import flask
+import flask_migrate
 import flask_security
 
 from audeeo import internet_archive, models, views
@@ -10,12 +10,12 @@ from audeeo.database import db
 
 
 def create_app():
-    app = Flask(__name__)
+    app = flask.Flask(__name__)
     app.config.from_object(os.environ['APP_SETTINGS'])
 
     db.init_app(app)
 
-    migrate = Migrate()
+    migrate = flask_migrate.Migrate()
     migrate.init_app(app, db=db, compare_type=True, compare_server_default=True)
 
     user_datastore = flask_security.SQLAlchemySessionUserDatastore(db.session, models.User, models.Role)
