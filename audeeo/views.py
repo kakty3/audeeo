@@ -42,7 +42,7 @@ def index():
         response = app.ia_client.upload(identifier=user_feed.ia_identifier, file=file, key=file_key)
 
         file_url = app.ia_client.get_file_url(user_feed.ia_identifier, file_key)
-        message = 'Episode upoaded: {url}'.format(url=file_url)
+        message = 'Episode uploaded: {url}'.format(url=file_url)
         app.logger.info(message)
         flash(message, 'info')
 
