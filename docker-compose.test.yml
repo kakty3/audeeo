@@ -5,14 +5,12 @@ services:
     depends_on:
       - db-test
     volumes:
-      - ./config.py:/srv/audeeo/config.py
       - ./audeeo:/srv/audeeo/audeeo
       - ./tests:/srv/audeeo/tests
     environment:
-      FLASK_SECRET_KEY: "ohphisai5lohTha"
-    environment:
       DATABASE_URL: "postgresql://postgres:postgres@db-test/postgres"
-      APP_SETTINGS: "config.TestingConfig"
+      FLASK_SECRET_KEY: "ohphisai5lohTha"
+      FLASK_TESTING: 1
     networks:
       - test
     command: ["wait-for-it", "db-test:5432", "--timeout=30", "--strict", "--",

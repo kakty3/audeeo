@@ -8,14 +8,12 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - ./config.py:/srv/audeeo/config.py
       - ./audeeo:/srv/audeeo/audeeo
       - ./migrations:/srv/audeeo/migrations
     env_file: .env
     environment:
-      DATABASE_URL: "postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db/${POSTGRES_DB}"
-      APP_SETTINGS: "config.DevelopmentConfig"
       FLASK_ENV: "development"
+      DATABASE_URL: "postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db/${POSTGRES_DB}"
     command: ["wait-for-it", "db:5432", "--timeout=30", "--strict", "--",
               "flask", "run", "--host", "0.0.0.0", "--port", "8000"]
 

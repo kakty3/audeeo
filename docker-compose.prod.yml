@@ -42,9 +42,8 @@ services:
        - traefik.docker.network=traefik-net
     env_file: .env
     environment:
-      DATABASE_URL: "postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db/${POSTGRES_DB}"
-      APP_SETTINGS: "config.ProductionConfig"
       FLASK_ENV: "production"
+      DATABASE_URL: "postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db/${POSTGRES_DB}"
     command: ["wait-for-it", "db:5432", "--timeout=30", "--strict", "--",
               "gunicorn", "-c", "gunicorn-conf.py", "wsgi:create_app()"]
 
