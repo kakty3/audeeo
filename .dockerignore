@@ -13,7 +13,7 @@ __pycache__
 Dockerfile
 .dockerignore
 .env
-docker-compose.yml
+docker-compose*.yml
 
 # Git
 .git
