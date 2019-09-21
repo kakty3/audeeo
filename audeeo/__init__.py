@@ -5,13 +5,13 @@ import flask
 import flask_migrate
 import flask_security
 
-from audeeo import internet_archive, models, views
+from audeeo import internet_archive, models, views, settings
 from audeeo.database import db
 
 
-def create_app():
+def create_app(config_object=settings):
     app = flask.Flask(__name__)
-    app.config.from_object(os.environ['APP_SETTINGS'])
+    app.config.from_object(config_object)
 
     db.init_app(app)
 
