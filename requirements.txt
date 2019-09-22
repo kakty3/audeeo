@@ -1,4 +1,5 @@
 bcrypt
+environs~=5.2.1
 feedgen
 filetype
 flask
