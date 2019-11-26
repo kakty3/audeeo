@@ -14,7 +14,9 @@ services:
     environment:
       FLASK_ENV: "development"
       DATABASE_URL: "postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db/${POSTGRES_DB}"
-    entrypoint: ["wait-for-it", "db:5432", "--timeout=30", "--strict", "--", "./docker-entrypoint.sh"]
+    entrypoint: [
+      "wait-for-it", "db:5432", "--timeout=30", "--strict", "--",
+      "flask", "run", "--host",  "0.0.0.0", "--port", "8000"]
 
   db:
     image: "postgres:11.2"

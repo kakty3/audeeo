@@ -7,7 +7,6 @@ services:
     volumes:
       - ./audeeo:/srv/audeeo/audeeo
       - ./tests:/srv/audeeo/tests
-      - ./docker-entrypoint.test.sh:/srv/audeeo/docker-entrypoint.test.sh
     environment:
       DATABASE_URL: "postgresql://postgres:postgres@db-test/postgres"
       FLASK_SECRET_KEY: "ohphisai5lohTha"
@@ -16,7 +15,9 @@ services:
       IA_S3_SECRET_ACCESS_KEY_ID: test_secret_key
     networks:
       - test
-    entrypoint: ["wait-for-it", "db-test:5432", "--timeout=30", "--strict", "--", "./docker-entrypoint.test.sh"]
+    entrypoint: [
+      "wait-for-it", "db-test:5432", "--timeout=30", "--strict", "--",
+      "flask", "test"]
 
   db-test:
     image: "postgres:11.2"
