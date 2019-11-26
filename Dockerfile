@@ -29,4 +29,4 @@ ENV FLASK_APP "audeeo"
 USER audeeo
 
 EXPOSE 8000
-ENTRYPOINT ["flask", "run", "--host",  "0.0.0.0", "--port", "8000"]
+ENTRYPOINT ["flask", "run", "--host", "0.0.0.0", "--port", "8000"]
