@@ -4,12 +4,15 @@ feedgen
 filetype
 flask
 flask-konch
+flask-marshmallow
 flask-migrate
+flask-restful
 flask-security~=3.0.0
 flask-sqlalchemy
 flask-sqlalchemy-session
 flask-wtf
 gunicorn
 internetarchive
+marshmallow-sqlalchemy
 psycopg2-binary
 pytest~=5.1.1

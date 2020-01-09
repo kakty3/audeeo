@@ -2,18 +2,24 @@ import os
 
 import click
 import flask
+import flask_marshmallow
 import flask_migrate
 import flask_security
 
 from audeeo import internet_archive, models, views, settings
 from audeeo.database import db
+from audeeo.serialization import ma
+from audeeo.api import api_bp
 
 
 def create_app(config_object=settings):
     app = flask.Flask(__name__)
     app.config.from_object(config_object)
 
+    # Order matters: Initialize SQLAlchemy before Marshmallow
+    # https://flask-marshmallow.readthedocs.io/en/latest/
     db.init_app(app)
+    flask_marshmallow.Marshmallow(app)
 
     migrate = flask_migrate.Migrate()
     migrate.init_app(app, db=db, compare_type=True, compare_server_default=True)
@@ -28,6 +34,7 @@ def create_app(config_object=settings):
     )
 
     app.register_blueprint(views.bp)
+    app.register_blueprint(api_bp)
     register_shellcontext(app)
     register_commands(app)
 
