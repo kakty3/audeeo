@@ -12,19 +12,26 @@ api = Api(
     api_bp,
     errors = {
         'ResourceDoesNotExist' : {
-            'message': "A resource with that ID no longer exists.",
+            'message': 'A resource with that ID no longer exists.',
             'status': 410,
         },
         'ValidationError': {
-            'status:': 400,
+            'message': 'Invalid request',
+            'status': 400,
         }
     }
 )
 
 @api.representation('application/json')
 def output_json(result, code, headers=None):
-    serialized = result.schema.dumps(result.data, many=result.total != None)
-    response = make_response(serialized, code)
+    if type(result) == rest.rest_result.RestResult:
+        result = result.schema.dumps(result.data, many=result.total != None)
+    # Flask-Restful's error handling clashes w/ Marshmallow,
+    # so resulting dict is a mess of original request data & FR's error fields.
+    # because of that, if error - leave only 'message' and 'status' fields
+    if code >= 400:
+        result = {k: result.get(k) for k in ('message', 'status')}
+    response = make_response(result, code)
     response.headers.extend(headers or {})
     return response
 
