@@ -8,7 +8,6 @@ import flask_security
 
 from audeeo import internet_archive, models, views, settings
 from audeeo.database import db
-from audeeo.serialization import ma
 from audeeo.api import api_bp
 
 

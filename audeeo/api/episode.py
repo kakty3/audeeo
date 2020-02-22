@@ -37,8 +37,8 @@ class EpisodeResource(Resource):
 
         query = dict(request.args)
         pagination = {
-            'page': int(query.pop('page')) if query.get('page') else 1,
-            'per_page': int(query.pop('per_page')) if query.get('per_page') else self.default_per_page
+            'page': int(query.pop('page', 1)) ,
+            'per_page': int(query.pop('per_page', self.default_per_page))
         }
         self.schema.validate(data=query, session=db.session, partial=True)
 
