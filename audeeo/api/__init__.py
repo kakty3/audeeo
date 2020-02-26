@@ -24,8 +24,14 @@ api = Api(
 
 @api.representation('application/json')
 def output_json(result, code, headers=None):
-    if type(result) == rest.rest_result.RestResult:
-        result = result.schema.dumps(result.data, many=result.total != None)
+    if type(result) == rest.RestResult:
+        data = result.data
+        schema = result.schema
+        if result.total:
+            listresponse_schema = rest.create_listresponse_schema(result.schema)
+            schema = listresponse_schema()
+            data = {'total': result.total, 'items': result.data}
+        result = schema.dumps(data)
     # Flask-Restful's error handling clashes w/ Marshmallow,
     # so resulting dict is a mess of original request data & FR's error fields.
     # because of that, if error - leave only 'message' and 'status' fields
